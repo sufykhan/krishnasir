@@ -90,7 +90,7 @@ const CartScreen = () => {
           <ListGroup>
               <ListGroup.Item >
                   <h4>Subtotal {cartItems.reduce((acc,item)=>acc+item.qty,0)} Item</h4>
-                  <h4>Total Money: {(cartItems.reduce((acc,item)=>acc+item.qty * item.price,0)).toFixed(2)}</h4>
+                  <h4>Total Money: {(cartItems.reduce((acc,item)=>acc+Number(item.qty)* Number(item.pri),0)).toFixed(2)}</h4>
               </ListGroup.Item>
               <ListGroup.Item >
                   <Button type="button" className="btn-block" disabled={cartItems.length===0}>PROCEED TO CHECKOUT</Button>

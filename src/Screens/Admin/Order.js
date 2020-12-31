@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, ListGroup, Row, Table } from "react-bootstrap";
+import {  Container, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer";
@@ -35,9 +35,9 @@ const Order = () => {
             <tbody>
               <tr>
              <th>{id}</th>
-             <th><Link to={`/admin/order/${id}`}>Example</Link></th>
+             <th><Link to={`/admin/order/${id}`}>Sai</Link></th>
              <th>Rs{total()}</th>
-             <th>29-12-2020</th>
+             <th>31-12-2020</th>
               </tr>
             </tbody>
           </Table>

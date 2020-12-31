@@ -40,7 +40,7 @@ const Mainlogin = () => {
   const submitAdmin = (e) => {
     if(!loading){
     const foundVendor=vendors.find(vendor=>vendor.name===aname)
-    if (aname === "Krishna" && apassword === "123") {
+    if (aname === "Admin" && apassword === "123") {
       history.push("/admin");
     } else if (foundVendor&& apassword === "123") {
       history.push(`/vendor/${foundVendor.name}`);
@@ -73,9 +73,9 @@ const Mainlogin = () => {
       <Header />
       <main className="py-3" style={{ background: "rgb(149 185 223)" }}>
         <Container>
-          <div>
+        <img src={item} alt="background chef" style={{ opacity: "0.5",width:"100%"}} />
+       
             {message === "" ? <></> : <Alert variant="danger">{message}</Alert>}
-            <img src={item} alt="background chef" style={{ opacity: "0.5" }} />
 
             <FormContainer>
               <Col xs={12} md={6}>
@@ -143,7 +143,7 @@ const Mainlogin = () => {
                   </Tab>
                 </Tabs>
               </Col>
-              <Col xs={12} md={6}>
+              <Col xs={12} md={6} style={{marginBottom:"25px"}}>
                 <h1>Customer</h1>
                 <Form onSubmit={submitCustomer} style={{ color: "black" }}>
                   <Form.Group controlId="CustomerName">
@@ -172,7 +172,7 @@ const Mainlogin = () => {
                 </Form>
               </Col>
             </FormContainer>
-          </div>
+      
         </Container>
       </main>
       <Footer />
