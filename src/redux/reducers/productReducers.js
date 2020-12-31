@@ -1,18 +1,18 @@
-import {PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAIL,PRODUCT_LIST_REQUEST,PRODUCT_LIST_SUCCESS} from "../constants/productConstants"
+import {CREATE_PRODUCT, DELETE_PRODUCT, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_LIST_FAIL,PRODUCT_LIST_REQUEST,PRODUCT_LIST_SUCCESS, UPDATE_PRICE} from "../constants/productConstants"
 export const productListReducer=(state={ products:[] },action)=>{
     switch (action.type){
         case PRODUCT_LIST_REQUEST:
-            return {loading:true,product:[]}
+            return {loading:true,products:[]}
         case PRODUCT_LIST_SUCCESS:
             return {loading:false,products:action.payload}
         case PRODUCT_LIST_FAIL:
-            return {loading:false,error:action.payload}
+            return {loading:false,error:action.payload}    
         default:
             return state            
     }
 }
 
-export const productDetailsReducer=(state={ product:{review:[]} },action)=>{
+export const productDetailsReducer=(state={ product:{} },action)=>{
     switch (action.type){
         case PRODUCT_DETAILS_REQUEST:
             return {loading:true,...state}
@@ -20,6 +20,12 @@ export const productDetailsReducer=(state={ product:{review:[]} },action)=>{
             return {loading:false,product:action.payload}
         case PRODUCT_DETAILS_FAIL:
             return {loading:false,error:action.payload}
+        case UPDATE_PRICE:
+            return {product:action.payload} 
+        case DELETE_PRODUCT:
+            return {message:action.payload} 
+        case CREATE_PRODUCT:
+            return {product:action.payload}        
         default:
             return state            
     }

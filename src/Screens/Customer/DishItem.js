@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { Button, Card, Col, FormControl, Row, Table } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 // import Img from "../../images/cury.jpg"
 const DishItem = ({ product }) => {
-  const { name, calories, vendors, image, price } = product;
+
+  const { name, calories, vendors, image, price,_id } = product;
   const [index, setIndex] = useState(0);
   const [display,setDisplay]=useState(false);
+  
+  
+  const [qty,setQty]=useState(1);
+
+
   const history = useHistory();
   let countInStock = 4;
+
+  const addToCartHandler=()=>{
+    history.push(`/cart/${_id}?qty=${qty}&selectedvendor=${vendors[index]}&pri=${price[index]}`)
+  }
+
   const detail = () => {
     const y=vendors.map((value,index)=><tr><td>{index+1}</td><td>{value}</td><td>{price[index]}</td></tr>)
     const x = (
@@ -27,7 +38,7 @@ const DishItem = ({ product }) => {
     return x;
   };
   return (
-    <Col md={4} xs={12} sm={6} className="mb-3">
+    <Col md={4} xs={12} sm={6} className="mb-3" key={_id}>
       <Card className="mb-3">
         <Card.Body>
           <Row>
@@ -69,6 +80,7 @@ const DishItem = ({ product }) => {
           variant="flush"
           className="mr-sm-2"
           id="inlineFormCustomSelect"
+          onChange={(e)=>setQty(e.target.value)}
         >
           {Array.from(Array(countInStock).keys()).map((val) => {
             return (
@@ -78,7 +90,7 @@ const DishItem = ({ product }) => {
             );
           })}
         </FormControl>
-        <Button onClick={() => history.push("/cart")}>Add to Cart</Button>
+        <Button onClick={addToCartHandler}>Add to Cart</Button>
       </Card>
     </Col>
   );

@@ -1,36 +1,47 @@
 import React from "react";
-import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Col, Container, ListGroup, Row, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
-const Vendor = () => {
+const Order = () => {
+  const { cartItems } = useSelector((state) => state.cart);
+  const total = () => {
+    let sum = 0;
+    cartItems.map(({ pri, qty }) => (sum = sum + Number(pri * qty)));
+    return sum;
+  };
   const id = 1729;
   return (
     <>
       <Header />
-      <main className="py-3">
+      <main className="py-3" style={{background:"#c6e7dc"}}>
         <Container>
           <Link to="/admin" className="btn btn-light my-3">
             Back
           </Link>
           <h3>Orders List</h3>
 
-          <ListGroup variant="flush">
-            <ListGroup.Item variant="flush">
-              <Row>
-                <Col md={3}>
-                  {" "}
-                  <Link to={`/admin/order/${id}`}>
-                    <h6>OrderId</h6>
-                  </Link>
-                </Col>
-                <Col md={3}>Customer Name</Col>
-                <Col md={3}>Order Amount</Col>
-                <Col md={3}>Order Date</Col>
-              </Row>
-            </ListGroup.Item>
-          </ListGroup>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>OrderId</th>
+                <th>Customer Name</th>
+                <th>Total Amount</th>
+                <th>Order Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+             <th>{id}</th>
+             <th><Link to={`/admin/order/${id}`}>Example</Link></th>
+             <th>Rs{total()}</th>
+             <th>29-12-2020</th>
+              </tr>
+            </tbody>
+          </Table>
+
         </Container>
       </main>
       <Footer />
@@ -38,4 +49,4 @@ const Vendor = () => {
   );
 };
 
-export default Vendor;
+export default Order;

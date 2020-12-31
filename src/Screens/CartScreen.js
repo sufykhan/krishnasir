@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Alert, Col, ListGroup, Row, Image, FormControl, Button, Card, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import CustomerHeader from "../components/CustomerHeader";
+import { cartActions, removeFromCart } from "../redux/actions/cartActions";
 // import img from "../images/cury.jpg"
-import im from "../svg/cart.svg"
+// import im from "../svg/cart.svg"
 const CartScreen = () => {
+  let {id} = useParams();
+  let location = useLocation();
+  const history=useHistory();
+
+
+  const qty = location.search ? Number((location.search.split("&")[0]).split("=")[1]) : 1;
+  const selectedvendor = location.search ? ((location.search.split("&")[1]).split("=")[1]) : "";
+  const pri = location.search ? ((location.search.split("&")[2]).split("=")[1]) : 1;
+
+  const dispatch = useDispatch();
+
+  const { cartItems } = useSelector((state) => state.cart);
+  //console.log(cartItems);
+
+  useEffect(() => {
+    if (id) {
+      console.log("Dispatch cartaction working")
+      dispatch(cartActions(id, qty,selectedvendor,pri));
+    }
+  }, [dispatch, id, qty,selectedvendor,pri]);
+   
+  const removeFromCartHandler=(id,selectedvendor)=>{
+       dispatch(removeFromCart(id,selectedvendor))
+   }
+
+   const checkoutHandler=()=>{
+    history.push("/login/?redirect=shipping")
+}
+
   return (
       <>
       <CustomerHeader/>
@@ -16,22 +47,23 @@ const CartScreen = () => {
     <Row >
       <Col md={8}>
         <h2>ORDER LIST</h2>
-        {1=== 0 ? (
+        {cartItems.length=== 0 ? (
           <Alert variant="info">
             Your cart is empty <Link to="/customer">Go Back</Link>
           </Alert>
         ) : (
           <ListGroup>
-               
-                  <ListGroup.Item variant="flush" >
-                    <Row>
+               {cartItems.map(({calories,image,name,pri,product,qty,selectedvendor})=>
+               <ListGroup.Item variant="flush" key={product}>
+                    <Row style={{alignItems:"center"}}>
                       <Col md={2}>
-                        <Image src={"/images/cury.jpg"} fluid rounded />
+                        <Image src={image} fluid rounded />
                       </Col>
-                      <Col md={3}><Link to={`/`}>Food Name</Link></Col>
-                      <Col md={2}>Rs 200</Col>
+                      <Col md={2}><Link to={`/`}>{name}</Link></Col>
+                      <Col md={2}>Rs {pri}</Col>
                       <Col md={2}>
-                        <FormControl as="select" value={2} variant="flush" >
+                      Quantity:{qty}
+                        {/* <FormControl as="select" value={2} variant="flush" >
                           {Array.from(Array(5).keys()).map((val) => {
                             return (
                               <option key={val + 1} value={val + 1}>
@@ -39,36 +71,17 @@ const CartScreen = () => {
                               </option>
                             );
                           })}
-                        </FormControl>
+                        </FormControl> */}
                       </Col>
+                      <Col md={2}>{selectedvendor}</Col>
                       <Col md={2}>
-                        <Button type="button" variant="light"><i className="fas fa-trash"></i></Button>
+                        <Button type="button" variant="light" onClick={removeFromCartHandler}><i className="fas fa-trash"></i></Button>
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item variant="flush" >
-                    <Row>
-                      <Col md={2}>
-                        <Image src={"/images/cury.jpg"} fluid rounded />
-                      </Col>
-                      <Col md={3}><Link to={`/`}>Food Name</Link></Col>
-                      <Col md={2}>Rs 200</Col>
-                      <Col md={2}>
-                        <FormControl as="select" value={2} variant="flush" >
-                          {Array.from(Array(5).keys()).map((val) => {
-                            return (
-                              <option key={val + 1} value={val + 1}>
-                                {val + 1}
-                              </option>
-                            );
-                          })}
-                        </FormControl>
-                      </Col>
-                      <Col md={2}>
-                        <Button type="button" variant="light"><i className="fas fa-trash"></i></Button>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+
+               )}
+                  
           </ListGroup>
         )}
       </Col>
@@ -76,11 +89,11 @@ const CartScreen = () => {
       <Card variant="flush">
           <ListGroup>
               <ListGroup.Item >
-                  <h3>Subtotal n Item</h3>
-                  <h3>Total Money</h3>
+                  <h4>Subtotal {cartItems.reduce((acc,item)=>acc+item.qty,0)} Item</h4>
+                  <h4>Total Money: {(cartItems.reduce((acc,item)=>acc+item.qty * item.price,0)).toFixed(2)}</h4>
               </ListGroup.Item>
               <ListGroup.Item >
-                  <Button type="button" className="btn-block">PROCEED TO CHECKOUT</Button>
+                  <Button type="button" className="btn-block" disabled={cartItems.length===0}>PROCEED TO CHECKOUT</Button>
               </ListGroup.Item>
           </ListGroup>
       </Card>

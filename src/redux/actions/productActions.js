@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  UPDATE_PRICE,
+  CREATE_PRODUCT,
+  DELETE_PRODUCT
 } from "../constants/productConstants";
 
 export const listProducts = () => async (dispatch) => {
@@ -37,5 +40,47 @@ export const listProductDetails = (id) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_FAIL,
          payload: error.response && error.response.data.message ? error.response.data.message : error.message, 
         });
+  }
+};
+
+
+export const updateProducts = (valueId,target) => async (dispatch) => {
+  try {
+    const { data } = await axios.patch(`/api/products/${valueId}`,target);
+   // console.log(valueId)
+    console.log(target)
+    console.log(data)
+    dispatch({
+      type: UPDATE_PRICE,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+export const deleteProduct = (valueId) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/products/${valueId}`);
+    const message="Sucessfully removed"
+    dispatch({
+      type: DELETE_PRODUCT,
+      payload: message,
+    });
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+export const createProduct = (postData) => async (dispatch) => {
+  try {
+    console.log("hello")
+    const {data}=await axios.post(`/api/products`,postData);
+    dispatch({
+      type: CREATE_PRODUCT,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error)
   }
 };
