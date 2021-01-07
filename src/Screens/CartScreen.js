@@ -1,25 +1,28 @@
-import React, { useEffect } from "react";
-import {Alert, Col, ListGroup, Row, Image, FormControl, Button, Card, Container } from "react-bootstrap";
+import React, { useEffect} from "react";
+import {Alert, Col, ListGroup, Row, Image,  Button, Card, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import CustomerHeader from "../components/CustomerHeader";
-import { cartActions, removeFromCart } from "../redux/actions/cartActions";
+import { cartActions, createOrder, removeFromCart } from "../redux/actions/cartActions";
 // import img from "../images/cury.jpg"
 // import im from "../svg/cart.svg"
 const CartScreen = () => {
   let {id} = useParams();
   let location = useLocation();
   const history=useHistory();
-
+ 
+  // const [orderMessage,setOrderMessage]=useState(false)
 
   const qty = location.search ? Number((location.search.split("&")[0]).split("=")[1]) : 1;
   const selectedvendor = location.search ? ((location.search.split("&")[1]).split("=")[1]) : "";
   const pri = location.search ? ((location.search.split("&")[2]).split("=")[1]) : 1;
+ 
+  const userLoginValue=JSON.parse(localStorage.getItem("customerLogined"))
 
   const dispatch = useDispatch();
 
   const { cartItems } = useSelector((state) => state.cart);
-  //console.log(cartItems);
+  //console.log(order);
 
   useEffect(() => {
     if (id) {
@@ -33,7 +36,16 @@ const CartScreen = () => {
    }
 
    const checkoutHandler=()=>{
-    history.push("/login/?redirect=shipping")
+     
+     if(userLoginValue)
+     {
+       const order={cartItems:cartItems,customer:userLoginValue}
+      dispatch(createOrder(order))
+      history.push("/success")
+     }
+     else{
+       history.push("/")
+     }
 }
 
   return (
@@ -44,6 +56,7 @@ const CartScreen = () => {
       <Container >
       <div>
       {/* <img src={im} style={{opacity:"0.5"}}/> */}
+      {/* {orderMessage?<Alert variant="Success">Order Placed Successfully</Alert>:<></>} */}
     <Row >
       <Col md={8}>
         <h2>ORDER LIST</h2>
@@ -93,7 +106,7 @@ const CartScreen = () => {
                   <h4>Total Money: {(cartItems.reduce((acc,item)=>acc+Number(item.qty)* Number(item.pri),0)).toFixed(2)}</h4>
               </ListGroup.Item>
               <ListGroup.Item >
-                  <Button type="button" className="btn-block" disabled={cartItems.length===0}>PROCEED TO CHECKOUT</Button>
+                  <Button type="button" className="btn-block" disabled={cartItems.length===0} onClick={checkoutHandler}>PROCEED TO CHECKOUT</Button>
               </ListGroup.Item>
           </ListGroup>
       </Card>

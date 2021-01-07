@@ -8,7 +8,7 @@ import Order from "./Screens/Admin/Order";
 import Customer from "./Screens/Admin/Customer";
 import CustomerScreen from "./Screens/CustomerScreen";
 import CartScreen from "./Screens/CartScreen";
-import OrderDynamicPage from "./Screens/Admin/OrderDynamicPage";
+//import OrderDynamicPage from "./Screens/Admin/OrderDynamicPage";
 import VendorPage from "./Screens/Vendor/VendorPage"
 import UpdateDish from "./Screens/Vendor/UpdateDish";
 import DeleteDish from "./Screens/Vendor/DeleteProductVendor";
@@ -20,6 +20,7 @@ import DeleteAdminVendor from "./Screens/Admin/Vendor/DeleteVendor";
 import DeleteAdminCustomer from "./Screens/Admin/Customer/DeleteCustomer"
 import UpdateAdminVendor from "./Screens/Admin/Vendor/UpdateVendor"
 import UpdateAdminCustomer from "./Screens/Admin/Customer/UpdateCustomer"
+import Success from "./Screens/Success";
 
 const App = () => {
   return (
@@ -81,9 +82,9 @@ const App = () => {
             <CartScreen/>
           </Route>
 
-          <Route path="/admin/order/:id" exact>
+          {/* <Route path="/admin/order/:id" exact>
             <OrderDynamicPage/>
-          </Route>
+          </Route> */}
 
           <Route path="/vendor/:id" exact>
             <VendorPage/>
@@ -103,6 +104,10 @@ const App = () => {
 
           <Route path="/vendor/add/:id?" exact>
             <AddVendor/>
+          </Route>
+
+          <Route path="/success" exact>
+            <Success/>
           </Route>
 
     </>

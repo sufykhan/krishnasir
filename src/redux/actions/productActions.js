@@ -48,8 +48,8 @@ export const updateProducts = (valueId,target) => async (dispatch) => {
   try {
     const { data } = await axios.patch(`/api/products/${valueId}`,target);
    // console.log(valueId)
-    console.log(target)
-    console.log(data)
+    // console.log(target)
+    // console.log(data)
     dispatch({
       type: UPDATE_PRICE,
       payload: data,

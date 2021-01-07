@@ -57,6 +57,7 @@ const Mainlogin = () => {
   const submitCustomer = (e) => {
     if(!loading){
     const foundCustomer=customers.find(customer=>customer.name===cname)
+    localStorage.setItem("customerLogined",JSON.stringify(foundCustomer._id))
     if (foundCustomer && cpassword === "123") {
       history.push("/customer");
     } else {
@@ -92,6 +93,7 @@ const Mainlogin = () => {
                         <Form.Label>Admin User Name</Form.Label>
                         <Form.Control
                           type="text"
+                          required
                           placeholder="Enter User Name"
                           value={aname}
                           onChange={(e) => {
@@ -103,6 +105,7 @@ const Mainlogin = () => {
                         <Form.Label>Password </Form.Label>
                         <Form.Control
                           type="password"
+                          required
                           placeholder="Enter password"
                           value={apassword}
                           onChange={(e) => {
@@ -120,6 +123,7 @@ const Mainlogin = () => {
                         <Form.Label>Vendor User Name</Form.Label>
                         <Form.Control
                           type="text"
+                          required
                           placeholder="Enter User Name"
                           value={aname}
                           onChange={(e) => {
@@ -131,6 +135,7 @@ const Mainlogin = () => {
                         <Form.Label>Password </Form.Label>
                         <Form.Control
                           type="password"
+                          required
                           placeholder="Enter password"
                           value={apassword}
                           onChange={(e) => {
@@ -150,6 +155,7 @@ const Mainlogin = () => {
                     <Form.Label>Customer User Name</Form.Label>
                     <Form.Control
                       type="text"
+                      required
                       placeholder="Enter User Name"
                       value={cname}
                       onChange={(e) => {
@@ -161,6 +167,7 @@ const Mainlogin = () => {
                     <Form.Label>Password </Form.Label>
                     <Form.Control
                       type="password"
+                      required
                       placeholder="Enter password"
                       value={cpassword}
                       onChange={(e) => {
